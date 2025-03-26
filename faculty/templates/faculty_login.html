@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Login - OD Management{% endblock %}
+
+{% block content %}
+{% if messages %}
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+{% endif %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-4">
+            <h2 class="text-center mb-4">Login</h2>
+            
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Email</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}

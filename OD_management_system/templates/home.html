@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% block title %}Home - OD Management{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 d-flex justify-content-center mb-3">
+            <a href="{% url 'student_login' %}" class="tab-link">
+                <div class="tab-box bg-primary text-white d-flex align-items-center justify-content-center">
+                    <h2>Student Portal</h2>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center mb-3">
+            <a href="{% url 'faculty_login' %}" class="tab-link">
+                <div class="tab-box bg-success text-white d-flex align-items-center justify-content-center">
+                    <h2>Faculty Portal</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
