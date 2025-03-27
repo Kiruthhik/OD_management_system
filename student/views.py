@@ -21,3 +21,17 @@ def login(request):
 
 def home(request):
     return render(request, 'student_home.html')
+
+def apply_OD(request):
+    if request.method == 'POST':
+        event_type = request.POST['eventType']
+        venue = request.POST['venue']
+        start_date = request.POST['startDate']
+        end_date = request.POST['endDate']
+        start_time = request.POST['startTime']
+        end_time = request.POST['endTime']
+        mentor = request.POST['mentor']
+        print(event_type, venue, start_date, end_date, start_time, end_time, mentor)
+        teammates = request.POST.getlist('teammates[]')
+        print(teammates)
+    return render(request, 'apply_OD.html')

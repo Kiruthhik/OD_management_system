@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Apply for OD - OD Management{% endblock %}
+
+{% block content %}
+{% if messages %}
+    <div class="alert alert-info">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="event-container">
+    <div class="event-form-card">
+        <h2 class="event-title">Apply for OD</h2>
+        <form action="{% url 'apply_od' %}" method="POST" class="event-form">
+            {% csrf_token %}
+
+            <!-- Event Type -->
+            <div class="event-form-group">
+                <label for="eventType">Event Type:</label>
+                <select id="eventType" name="eventType" required>
+                    <option value="">Select an Event Type</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Conference">Conference</option>
+                    <option value="Competition">Competition</option>
+                </select>
+            </div>
+
+            <!-- Venue -->
+            <div class="event-form-group">
+                <label for="venue">Venue:</label>
+                <input type="text" id="venue" name="venue" placeholder="Enter event venue" required>
+            </div>
+
+            <!-- Start & End Dates -->
+            <div class="event-form-row">
+                <div class="event-form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                </div>
+                <div class="event-form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="endDate" required>
+                </div>
+            </div>
+
+            <!-- Time Fields -->
+            <div class="event-form-row">
+                <div class="event-form-group">
+                    <label for="startTime">Start Time:</label>
+                    <input type="time" id="startTime" name="startTime" required>
+                </div>
+                <div class="event-form-group">
+                    <label for="endTime">End Time:</label>
+                    <input type="time" id="endTime" name="endTime" required>
+                </div>
+            </div>
+
+            <!-- Mentor -->
+            <div class="event-form-group">
+                <label for="mentor">Mentor:</label>
+                <input type="text" id="mentor" name="mentor" placeholder="Enter mentor name" required>
+            </div>
+
+            <!-- Teammates Section -->
+            <div class="event-form-group">
+                <label>Team Members (Roll Numbers):</label>
+                <div id="teammates-container">
+                    <div class="teammate-entry">
+                        <input type="text" name="teammates[]" placeholder="Enter roll number" required>
+                        <button type="button" class="remove-teammate">✖</button>
+                    </div>
+                </div>
+                <button type="button" id="add-teammate" class="event-btn add-btn">Add Teammate</button>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="event-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("teammates-container");
+        const addButton = document.getElementById("add-teammate");
+
+        addButton.addEventListener("click", function () {
+            const newInput = document.createElement("div");
+            newInput.classList.add("teammate-entry");
+            newInput.innerHTML = `
+                <input type="text" name="teammates[]" placeholder="Enter roll number" required>
+                <button type="button" class="remove-teammate">✖</button>
+            `;
+            container.appendChild(newInput);
+        });
+
+        container.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-teammate")) {
+                e.target.parentElement.remove();
+            }
+        });
+    });
+</script>
+
+<style>
+    .teammate-entry {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .teammate-entry input {
+        flex-grow: 1;
+        padding: 8px;
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .remove-teammate {
+        background: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .remove-teammate:hover {
+        background: darkred;
+    }
+    .add-btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .add-btn:hover {
+        background: #218838;
+    }
+
+    /* Make the form responsive */
+    @media (max-width: 768px) {
+        .event-form-row {
+            flex-direction: column;
+        }
+        .event-form-row .event-form-group {
+            width: 100%;
+        }
+        .teammate-entry {
+            flex-direction: column;
+        }
+        .teammate-entry input {
+            margin-bottom: 5px;
+            width: 100%;
+        }
+    }
+</style>
+
+{% endblock %}
