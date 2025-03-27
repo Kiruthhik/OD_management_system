@@ -30,6 +30,12 @@
                 </select>
             </div>
 
+            <!-- Event_name -->
+            <div class="event-form-group">
+                <label for="event-name">Event Name:</label>
+                <input type="text" id="venue" name="eventName" placeholder="Enter event venue" required>
+            </div>
+
             <!-- Venue -->
             <div class="event-form-group">
                 <label for="venue">Venue:</label>
@@ -63,8 +69,14 @@
             <!-- Mentor -->
             <div class="event-form-group">
                 <label for="mentor">Mentor:</label>
-                <input type="text" id="mentor" name="mentor" placeholder="Enter mentor name" required>
+                <select id="mentor" name="mentor">
+                    <option value="">Select a Mentor</option>
+                    {% for mentor in mentors %}
+                        <option value="{{ mentor.user.username }}">{{ mentor.user.username }}</option>
+                    {% endfor %}
+                </select>
             </div>
+        
 
             <!-- Teammates Section -->
             <div class="event-form-group">
