@@ -1,23 +1,75 @@
 {% extends "layout.html" %}
 
-{% block title %}Login - OD Management{% endblock %}
+{% block title %}Student Home - OD Management{% endblock %}
 
 {% block content %}
 {% if messages %}
-        <div class="alert alert-info">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
+    <div class="alert alert-info">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
 {% endif %}
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="col-md-6">
-        <div class="card shadow-lg p-4">
-            <h2 class="text-center mb-4">Student Home</h2>
-            
-            
-            
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Student Home</h2>
+
+    <div class="row">
+        <!-- Pending ODs -->
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h4 class="text-center">Pending ODs</h4>
+                <div class="od-list">
+                    
+                        <div class="od-card bg-warning text-dark p-2 mb-2 rounded">
+                            <strong>{{ od.eventType }}</strong>
+                            <p class="mb-0">Start Date: {{ od.start_date }}</p>
+                        </div>
+                    
+                        <p class="text-center text-muted">No pending ODs</p>
+                    
+                </div>
+            </div>
         </div>
+
+        <!-- Approved ODs -->
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h4 class="text-center">Approved ODs</h4>
+                <div class="od-list">
+                   
+                        <div class="od-card bg-success text-white p-2 mb-2 rounded">
+                            <strong>{{ od.eventType }}</strong>
+                            <p class="mb-0">Start Date: {{ od.start_date }}</p>
+                        </div>
+                    
+                        <p class="text-center text-muted">No approved ODs</p>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Rejected ODs -->
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h4 class="text-center">Rejected ODs</h4>
+                <div class="od-list">
+                    
+                        <div class="od-card bg-danger text-white p-2 mb-2 rounded">
+                            <strong>{{ od.eventType }}</strong>
+                            <p class="mb-0">Start Date: {{ od.start_date }}</p>
+                        </div>
+                    
+                        <p class="text-center text-muted">No rejected ODs</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apply OD Button -->
+    <div class="text-center mt-4">
+        <a href="#" class="btn btn-primary btn-lg">Apply for OD</a>
     </div>
 </div>
 
@@ -25,5 +77,10 @@
     .card {
         border-radius: 10px;
     }
+    .od-card {
+        border-radius: 8px;
+        padding: 10px;
+    }
 </style>
+
 {% endblock %}
