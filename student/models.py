@@ -86,7 +86,7 @@ class student_OD(models.Model):
     hod_approval = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.eventName + " " + self.start_date.strftime('%Y-%m-%d') + " " + self.end_date.strftime('%Y-%m-%d')
+        return self.eventName + " " + self.eventType + " " + self.start_date.strftime('%Y-%m-%d') + " " + self.end_date.strftime('%Y-%m-%d')
     
 class faculty_OD(models.Model):
     faculty = models.ForeignKey(Faculty, related_name='ODs', on_delete=models.CASCADE)

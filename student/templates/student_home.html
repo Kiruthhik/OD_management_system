@@ -20,13 +20,14 @@
             <div class="card shadow-sm p-3">
                 <h4 class="text-center">Pending ODs</h4>
                 <div class="od-list">
-                    
+                    {% for od in pending_ods %}
                         <div class="od-card bg-warning text-dark p-2 mb-2 rounded">
                             <strong>{{ od.eventType }}</strong>
                             <p class="mb-0">Start Date: {{ od.start_date }}</p>
                         </div>
-                    
+                    {% empty %}
                         <p class="text-center text-muted">No pending ODs</p>
+                    {% endfor %}
                     
                 </div>
             </div>
@@ -37,14 +38,15 @@
             <div class="card shadow-sm p-3">
                 <h4 class="text-center">Approved ODs</h4>
                 <div class="od-list">
-                   
+                   {% for od in approved_ods %}
                         <div class="od-card bg-success text-white p-2 mb-2 rounded">
+                            <strong>{{ od.eventName }}</strong>
                             <strong>{{ od.eventType }}</strong>
                             <p class="mb-0">Start Date: {{ od.start_date }}</p>
                         </div>
-                    
+                    {% empty %}
                         <p class="text-center text-muted">No approved ODs</p>
-                   
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -54,14 +56,14 @@
             <div class="card shadow-sm p-3">
                 <h4 class="text-center">Rejected ODs</h4>
                 <div class="od-list">
-                    
+                    {% for od in rejected_ods %}
                         <div class="od-card bg-danger text-white p-2 mb-2 rounded">
                             <strong>{{ od.eventType }}</strong>
                             <p class="mb-0">Start Date: {{ od.start_date }}</p>
                         </div>
-                    
+                    {% empty %}
                         <p class="text-center text-muted">No rejected ODs</p>
-                    
+                    {% endfor %}
                 </div>
             </div>
         </div>
