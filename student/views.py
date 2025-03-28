@@ -66,3 +66,7 @@ def apply_OD(request):
         return redirect('student_home')
     mentors = Faculty.objects.all()
     return render(request, 'apply_OD.html',{'mentors':mentors})
+
+def OD_status(request,id):
+    od = student_OD.objects.get(id=id)
+    return render(request, 'student_OD.html',{'od':od})

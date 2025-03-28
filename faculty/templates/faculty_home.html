@@ -1,29 +1,84 @@
-{% extends "layout.html" %}
-
-{% block title %}Login - OD Management{% endblock %}
+{% extends 'layout.html' %}
+{% load static %}
+{% load custom_filters %}
 
 {% block content %}
-{% if messages %}
-        <div class="alert alert-info">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Faculty Dashboard</h2>
+
+    <!-- OD Requests Section -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4>Pending OD Requests</h4>
         </div>
-{% endif %}
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="col-md-6">
-        <div class="card shadow-lg p-4">
-            <h2 class="text-center mb-4">Faculty Home</h2>
-            
-            
-            
+        <div class="card-body">
+            {% if od_requests %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for od in od_requests %}
+                            <tr>
+                                <td>{{od.student.user.username}}</td>
+                                <td>{{ od.eventName }}</td>
+                                <td>{{ od.start_date|date:"d M Y" }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-success btn-sm">Approve</a>
+                                    <a href="#" class="btn btn-danger btn-sm">Reject</a>
+                                </td>
+                                <td><a href="{% url 'od_details' od.id %}" class="text-secondary">View details</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No pending OD requests.</p>
+            {% endif %}
         </div>
     </div>
-</div>
 
-<style>
-    .card {
-        border-radius: 10px;
-    }
-</style>
+    <!-- Classes & Students OD Section -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h4>Classes & Students with Approved OD</h4>
+        </div>
+        <div class="card-body">
+            {% if classes %}
+                {% for class in classes %}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5>{{ class.department }} - Year {{ class.year }} - Section {{ class.section }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {% for student in students_with_od|get_item:class %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ student.user.first_name }} {{ student.user.last_name }} ({{ student.roll_number }})
+                                        <span class="badge bg-success">OD Approved</span>
+                                    </li>
+                                {% empty %}
+                                    <li class="list-group-item text-muted">No students with approved OD in this class.</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">You are not handling any classes.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Floating Button to Apply for OD -->
+    <a href="#" class="btn btn-primary btn-lg shadow-lg position-fixed" style="bottom: 20px; right: 20px; border-radius: 50%;">
+        <i class="fas fa-plus"></i>
+    </a>
+</div>
 {% endblock %}

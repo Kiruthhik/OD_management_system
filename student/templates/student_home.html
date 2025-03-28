@@ -21,7 +21,7 @@
                 <h4 class="text-center">Pending ODs</h4>
                 <div class="od-list">
                     {% for od in pending_ods %}
-                        <div class="od-card bg-warning text-dark p-2 mb-2 rounded">
+                        <div class="od-card bg-warning text-dark p-2 mb-2 rounded w-100 hover-shadow" onclick="window.location='{% url 'od_status' od.id %}'">
                             <strong>{{ od.eventType }}</strong>
                             <p class="mb-0">Start Date: {{ od.start_date }}</p>
                         </div>
@@ -82,7 +82,11 @@
     .od-card {
         border-radius: 8px;
         padding: 10px;
+        cursor: pointer;
     }
+    
 </style>
 
 {% endblock %}
+
+
