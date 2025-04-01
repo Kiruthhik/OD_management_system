@@ -25,13 +25,15 @@
                     </thead>
                     <tbody>
                         {% for od in od_requests %}
-                            <tr>
+                            <tr id="od-{{ od.id }}">
                                 <td>{{od.student.user.username}}</td>
                                 <td>{{ od.eventName }}</td>
                                 <td>{{ od.start_date|date:"d M Y" }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-success btn-sm">Approve</a>
-                                    <a href="#" class="btn btn-danger btn-sm">Reject</a>
+                                    <!-- need to call onclick function for the approve and reject buttons-->
+                                     
+                                    <a  onclick="handleOdRequest({{od.id}},'approve')" class="btn btn-success btn-sm">Approve</a>
+                                    <a  onclick="handleOdRequest({{od.id}},'reject')" class="btn btn-danger btn-sm">Reject</a>
                                 </td>
                                 <td><a href="{% url 'od_details' od.id %}" class="text-secondary">View details</a></td>
                             </tr>
@@ -81,4 +83,35 @@
         <i class="fas fa-plus"></i>
     </a>
 </div>
+
+<script>
+//want to add a onclick event handler for the approve and reject buttons by passing the od id to the function
+// and then use the od id to get the row of the od request and hide it from the table
+// then use ajax to send a post request to the server with the od id and the action (approve or reject)
+function handleOdRequest(odId, action) {
+    console.log('Handling OD request:', odId, action);
+    // Hide the row from the table
+    document.getElementById('od-' + odId).style.display = 'none';
+
+    // Send AJAX request to the server
+    fetch("{% url 'process_od' 0 'approve' %}".replace("0", odId).replace("approve", action), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ id: odId, action: action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Request processed successfully');
+        } else {
+            console.error('Error processing request:', data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+</script>
 {% endblock %}

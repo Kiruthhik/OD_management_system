@@ -49,9 +49,18 @@ class Student(models.Model):
         return self.user.username
 
 class Faculty(models.Model):
+    class FacultyType(models.TextChoices):
+        HOD = "HOD", "HOD"
+        TEACHING = "Teaching", "Teaching"
+        ACADEMIC_HEAD = "Academic Head", "Academic Head"
+        DC = "DC", "DC"
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.CharField(max_length=50)
-    faculty_type = models.CharField(max_length=50)
+    faculty_type = models.CharField(
+        max_length=20,
+        choices=FacultyType.choices,
+        default=FacultyType.TEACHING
+    )
 
     def __str__(self):
         return self.user.first_name
