@@ -19,12 +19,12 @@ def login(request):
 
 def home(request):
     faculty = Faculty.objects.get(user=request.user)
-    print(faculty.faculty_type)
+    #print(faculty.faculty_type)
     od_requests = []
     if(faculty.faculty_type == Faculty.FacultyType.TEACHING):
         print("Teaching")
         od_requests = (student_OD.objects.filter(class_incharge=faculty, class_incharge_approval=False, OD_rejection=False))
-        od_requests |= (student_OD.objects.filter(mentor=faculty,mentor_approval=False))
+        #od_requests |= (student_OD.objects.filter(mentor=faculty,mentor_approval=False))
     elif(faculty.faculty_type == Faculty.FacultyType.HOD):
         print("HOD")
         od_requests = (student_OD.objects.filter(academic_head_approval=True, hod_approval=False))

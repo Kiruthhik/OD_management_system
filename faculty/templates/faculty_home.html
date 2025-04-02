@@ -18,7 +18,10 @@
                         <tr>
                             <th>Student</th>
                             <th>Event</th>
-                            <th>Date</th>
+                            <th>Venue</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Team/individual</th>
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
@@ -28,7 +31,14 @@
                             <tr id="od-{{ od.id }}">
                                 <td>{{od.student.user.username}}</td>
                                 <td>{{ od.eventName }}</td>
+                                <td>{{ od.venue }}</td>
                                 <td>{{ od.start_date|date:"d M Y" }}</td>
+                                <td>{{ od.end_date|date:"d M Y" }}</td>
+                                {% if od.is_team %}
+                                    <td>Team</td>
+                                {% else %}
+                                    <td>Individual</td>
+                                {% endif %}
                                 <td>
                                     <!-- need to call onclick function for the approve and reject buttons-->
                                      

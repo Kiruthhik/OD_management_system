@@ -44,26 +44,32 @@ from django.contrib.auth.models import User
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     roll_number = models.CharField(max_length=10)
-
+    department = models.CharField(max_length=50,default="CSE")
+    section = models.CharField(max_length=10,default="A")
+    year = models.IntegerField(max_length=10,default="2")
     def __str__(self):
-        return self.user.username
+        return self.user.username + " " + self.user.first_name + " " + self.user.last_name
 
 class Faculty(models.Model):
     class FacultyType(models.TextChoices):
         HOD = "HOD", "HOD"
         TEACHING = "Teaching", "Teaching"
-        ACADEMIC_HEAD = "Academic Head", "Academic Head"
+        ACADEMIC_HEAD_1 = "Academic Head 1st Year", "Academic Head 1st Year"
+        ACADEMIC_HEAD_2 = "Academic Head 2nd Year", "Academic Head 2nd Year"
+        ACADEMIC_HEAD_3 = "Academic Head 3rd Year", "Academic Head 3rd Year"
         DC = "DC", "DC"
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.CharField(max_length=50)
+    faculty_code = models.CharField(max_length=15,unique=True)
     faculty_type = models.CharField(
-        max_length=20,
+        max_length=50,
         choices=FacultyType.choices,
         default=FacultyType.TEACHING
     )
 
     def __str__(self):
-        return self.user.first_name
+        return self.user.first_name + " " + self.user.last_name
 
 class Class(models.Model):
     section = models.CharField(max_length=10)
