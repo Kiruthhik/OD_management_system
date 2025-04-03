@@ -46,7 +46,7 @@ class Student(models.Model):
     roll_number = models.CharField(max_length=10)
     department = models.CharField(max_length=50,default="CSE")
     section = models.CharField(max_length=10,default="A")
-    year = models.IntegerField(max_length=10,default="2")
+    year = models.IntegerField(default="2")
     def __str__(self):
         return self.user.username + " " + self.user.first_name + " " + self.user.last_name
 
@@ -92,8 +92,7 @@ class student_OD(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     isTeam = models.BooleanField(default=False)
-    mentor = models.ForeignKey(Faculty, related_name='mentors', blank=True, null=True, on_delete=models.SET_NULL)
-    mentor_approval = models.BooleanField(default=False)
+    teammates = models.ManyToManyField(Student, related_name='teammates', blank=True)
     class_incharge = models.ForeignKey(Faculty, related_name='OD_to_be_approve', on_delete=models.CASCADE)
     class_incharge_approval = models.BooleanField(default=False)
     OD_rejection = models.BooleanField(default=False)

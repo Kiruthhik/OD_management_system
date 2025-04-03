@@ -45,23 +45,26 @@ def apply_OD(request):
         end_date = request.POST['endDate']
         start_time = request.POST['startTime']
         end_time = request.POST['endTime']
-        mentor_name = request.POST['mentor']
-        mentor_user_obj = User.objects.get(username=mentor_name)
-        mentor = Faculty.objects.get(user=mentor_user_obj)
+        # mentor_name = request.POST['mentor']
+        # mentor_user_obj = User.objects.get(username=mentor_name)
+        #mentor = Faculty.objects.get(user=mentor_user_obj)
+        is_team = request.POST['isTeam']
+        if is_team == 'on':
+            is_team = True  
+        else:
+            is_team = False
         student = Student.objects.get(user=request.user)
         Classs = student.studies_in.all()[0]
         class_incharge = Classs.class_incharge
-        print(event_type, venue, start_date, end_date, start_time, end_time, mentor)
-        od = student_OD.objects.create(student = student,ClassOf = Classs, class_incharge = class_incharge ,eventName=event_name ,eventType=event_type, venue=venue, start_date=start_date, end_date=end_date, mentor=mentor)
+        print(event_type, venue, start_date, end_date, start_time, end_time)
+        od = student_OD.objects.create(student = student,ClassOf = Classs, class_incharge = class_incharge ,eventName=event_name ,eventType=event_type, venue=venue, start_date=start_date, end_date=end_date,isTeam=is_team)
         od.save()
         teammates = request.POST.getlist('teammates[]')
         for tm in teammates:
             tm_user_obj = User.objects.get(username=tm)
             tm_student = Student.objects.get(user=tm_user_obj)
-            classs = tm_student.studies_in.all()[0]
-            classIncharge = classs.class_incharge
-            OD = student_OD.objects.create(student = tm_student,ClassOf = classs,class_incharge = classIncharge, eventName = event_name,eventType=event_type, venue=venue, start_date=start_date, end_date=end_date,  mentor=mentor)
-            OD.save()
+            od.teammates.add(tm_student)
+        od.save()
         print(teammates)
         return redirect('student_home')
     mentors = Faculty.objects.all()

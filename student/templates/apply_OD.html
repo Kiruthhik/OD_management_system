@@ -67,28 +67,37 @@
             </div>
 
             <!-- Mentor -->
-            <div class="event-form-group">
+            <!-- <div class="event-form-group">
                 <label for="mentor">Mentor:</label>
                 <select id="mentor" name="mentor">
                     <option value="">Select a Mentor</option>
                     {% for mentor in mentors %}
-                        <option value="{{ mentor.user.username }}">{{ mentor.user.username }}</option>
+                        <option value="{{ mentor.user.username }}">{{ mentor.user.first_name }} {{mentor.user.last_name}}</option>
                     {% endfor %}
                 </select>
-            </div>
-        
+            </div> -->
 
-            <!-- Teammates Section -->
+            <!-- checkbox for team-->
             <div class="event-form-group">
-                <label>Team Members (Roll Numbers):</label>
-                <div id="teammates-container">
-                    <div class="teammate-entry">
-                        <input type="text" name="teammates[]" placeholder="Enter roll number" required>
-                        <button type="button" class="remove-teammate">✖</button>
-                    </div>
+                <div class="event-form-row" >
+                    <label for="isTeam">Is this a team event?</label>
+                <input type="checkbox" id="isTeam" name="isTeam" value="false">
                 </div>
-                <button type="button" id="add-teammate" class="event-btn add-btn">Add Teammate</button>
+                
             </div>
+            <!-- Teammates Section -->
+             <div id="teammates">
+                <div class="event-form-group">
+                    <label>Team Members (Roll Numbers):</label>
+                    <div id="teammates-container">
+                        <div class="teammate-entry">
+                            <input type="text" name="teammates[]" placeholder="Enter roll number" required>
+                            <button type="button" class="remove-teammate">✖</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-teammate" class="event-btn add-btn">Add Teammate</button>
+                </div>
+             </div>
 
             <!-- Submit Button -->
             <button type="submit" class="event-btn">Submit</button>
@@ -98,6 +107,21 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
+        //hide the teammate section by default and show it when the checkbox is checked
+        const isTeamCheckbox = document.getElementById("isTeam").value;
+        console.log(isTeamCheckbox);
+        document.getElementById("teammates").style.display = "none";
+        document.getElementById("isTeam").addEventListener("change", function () {
+            console.log(this.value);
+            if (this.checked) {
+                this.value = "true";
+                document.getElementById("teammates").style.display = "block";
+            } else {
+                this.value = "false";
+                document.getElementById("teammates").style.display = "none";
+            }
+        });
         const container = document.getElementById("teammates-container");
         const addButton = document.getElementById("add-teammate");
 
