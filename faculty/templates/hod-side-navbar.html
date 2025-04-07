@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<div class="d-flex" style="margin-top: 56px;">
+  <!-- Sidebar -->
+  <nav class="bg-sidebar text-white p-4 position-fixed vh-100" style="width: 250px ;top: 70px;">
+    <!-- Calendar -->
+    <div class="mt-5">
+      <label for="filter-date" class="form-label text-white fw-bold">Filter by Date</label>
+      <input type="date" class="form-control" id="filter-date" />
+    </div>
+    <br>
+    <ul class="nav flex-column">
+      <li class="nav-item mb-2">
+        <span class="fw-bold text-uppercase">Student OD</span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#">1st Year</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#">2nd Year</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#">3rd Year</a>
+      </li>
+      <li class="nav-item mt-4 mb-2">
+        <span class="fw-bold text-uppercase">Faculty OD</span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#">Faculty Requests</a>
+      </li>
+    </ul>
+
+    
+  </nav>
+
+  <!-- Main Content -->
+  <main class="ms-250 ps-4 pe-4 pt-4 flex-grow-1" style="margin-left: 250px; padding-top: 20px; overflow-y: auto; height: calc(100vh - 56px);">
+    {% block maincontent %}{% endblock %}
+  </main>
+</div>
+
+{% endblock %}

@@ -119,3 +119,14 @@ body {
 .event-form-spacer {
     height: 15px; /* Adjust as needed */
 }
+
+.bg-sidebar {
+    background-color: #5e35b1;
+  }
+  .bg-light-gray {
+    background-color: #f8f9fa;
+  }
+  .nav-link:hover {
+    text-decoration: underline;
+    color: #ddd;
+  }

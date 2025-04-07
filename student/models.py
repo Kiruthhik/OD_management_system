@@ -77,7 +77,7 @@ class Class(models.Model):
     year = models.CharField(max_length=10)
     students = models.ManyToManyField(Student, related_name='studies_in')
     faculties = models.ManyToManyField(Faculty, related_name='handles')
-    class_incharge = models.OneToOneField(Faculty, related_name='incharge_of', on_delete=models.CASCADE)
+    class_incharge = models.OneToOneField(Faculty,null=True, related_name='incharge_of', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.department} {self.year} {self.section}"
