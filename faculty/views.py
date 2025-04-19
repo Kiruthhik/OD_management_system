@@ -23,7 +23,7 @@ def home(request):
     faculty = Faculty.objects.get(user=request.user)
     print(faculty.faculty_type)
     if(faculty.faculty_type == Faculty.FacultyType.HOD):
-        return hod_home(request, faculty)
+        return redirect('hod_home')
     od_requests = OD_requests(faculty)
 
     print(od_requests)
@@ -31,7 +31,23 @@ def home(request):
     student_with_od = {}
     for cls in classes:
         #approved_students = Student.objects.filter(ODs__ClassOf=cls, ODs__hod_approval=True).distinct()
-        student_with_od[cls] = list(student_OD.objects.filter(ClassOf=cls, hod_approval=True))
+        # student_with_od[str(cls.id)] = list(student_OD.objects.filter(ClassOf=cls, hod_approval=True).distinct())
+
+        class_students = cls.students.all()
+
+        # All approved OD requests
+        approved_ods = student_OD.objects.filter(hod_approval=True)
+
+        # Get students from this class who are either:
+        # - the main applicant
+        # - or a teammate
+        involved_students = Student.objects.filter(
+            models.Q(ODs__in=approved_ods) | models.Q(teammates__in=approved_ods),
+            id__in=class_students.values_list('id', flat=True)
+        ).distinct()
+
+        student_with_od[str(cls.id)] = list(involved_students)
+        
     context = {
         'od_requests': od_requests,
         'classes': classes,
@@ -40,13 +56,37 @@ def home(request):
     print(context)
     return render(request, 'faculty_home.html', context)
 
-def hod_home(request, faculty):
-    od_requests = student_OD.objects.filter(academic_head_approval=True, hod_approval=False)
-    all_od_requests = student_OD.objects.all()
-    content = {
-        'od_requests': od_requests,
-        'all_od_requests': all_od_requests
-    }
+def hod_home(request):
+    filter_date = request.GET.get('date')
+    content = {}
+    if filter_date:
+        # Convert the string date to a datetime object
+        from datetime import datetime  
+        filter_date = datetime.strptime(filter_date, '%Y-%m-%d').date()
+        # Filter the od_requests based on the startdate less than or equal to the filter_date and enddate greater than or equal to the filter_date
+        od_requests = student_OD.objects.filter(hod_approval=False, start_date__lte=filter_date,end_date__gte=filter_date)
+        pending_od_requests = student_OD.objects.filter(academic_head_approval=False,OD_rejection=False,start_date__lte=filter_date,end_date__gte=filter_date)
+        pending_od_requests |= student_OD.objects.filter(class_incharge_approval=False,OD_rejection=False,start_date__lte=filter_date,end_date__gte=filter_date)
+        processed_od_requests = student_OD.objects.filter(hod_approval=True,start_date__lte=filter_date,end_date__gte=filter_date)
+        processed_od_requests |= student_OD.objects.filter(OD_rejection=True,start_date__lte=filter_date,end_date__gte=filter_date)
+        content = {
+            'od_requests': od_requests,
+            'pending_od_requests': pending_od_requests,
+            'processed_od_requests': processed_od_requests,
+        }
+
+    else:
+        od_requests = student_OD.objects.filter(academic_head_approval=True, hod_approval=False,OD_rejection=False)
+    #all_od_requests = student_OD.objects.all()
+        pending_od_requests = student_OD.objects.filter(academic_head_approval=False,hod_approval=False,OD_rejection=False)
+        pending_od_requests |= student_OD.objects.filter(class_incharge_approval=False,hod_approval=False,OD_rejection=False)
+        processed_od_requests = student_OD.objects.filter(hod_approval=True)
+        processed_od_requests |= student_OD.objects.filter(OD_rejection=True)
+        content = {
+            'od_requests': od_requests,
+            'pending_od_requests': pending_od_requests,
+            'processed_od_requests': processed_od_requests,
+        }
     print(od_requests)
     return render(request, 'hod-home.html',content)
 

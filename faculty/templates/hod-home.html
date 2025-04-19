@@ -26,7 +26,11 @@
                 <td>{{od.venue}}</td>
                 <td>{{od.start_date | date:"d M Y"}}</td>
                 <td>{{od.end_date | date:"d M Y"}}</td>
-                <td>Team</td>
+                {% if od.isTeam %}
+                  <td>Team</td>
+                {% else %}
+                  <td>Individual</td>
+                {% endif %}
                 {% if not od.class_incharge_approval %}
                 <td><span class="badge bg-warning text-dark">class incharge approval pending</span></td>
                 {% elif not od.academic_head_approval %}
@@ -46,17 +50,58 @@
                 <td>{{od.venue}}</td>
                 <td>{{od.start_date | date:"d M Y"}}</td>
                 <td>{{od.end_date | date:"d M Y"}}</td>
-                <td>Team</td>
-                {% if not od.class_incharge_approval %}
-                <td><span class="badge bg-warning text-dark">class incharge approval pending</span></td>
-                {% elif not od.academic_head_approval %}
-                <td><span class="badge bg-warning text-dark">academic head approval pending</span></td>
+                {% if od.isTeam %}
+                  <td>Team</td>
                 {% else %}
-                <td><span class="badge bg-success">to be Approved</span></td>
+                  <td>Individual</td>
                 {% endif %}
+                <td><span class="badge bg-success">to be Approved</span></td>
                 <td>
                 <button class="btn btn-success btn-sm" onclick="handleOdRequest({{od.id}},'approve')" data-url="{% url 'process_od' 1 'approve' %}">Approve</button>
                 <button class="btn btn-danger btn-sm" onclick="handleOdRequest({{od.id}},'reject')" data-url="{% url 'process_od' 1 'approve' %}">Reject</button>
+                </td>
+            </tr>
+        {% endfor %}
+
+        {% for od in pending_od_requests %}
+            <tr id="od-{{od.id}}" >
+                <td>{{od.student.user.username}}</td>
+                <td>{{od.eventName}}</td>
+                <td>{{od.venue}}</td>
+                <td>{{od.start_date | date:"d M Y"}}</td>
+                <td>{{od.end_date | date:"d M Y"}}</td>
+                {% if od.isTeam %}
+                  <td>Team</td>
+                {% else %}
+                  <td>Individual</td>
+                {% endif %}
+                <td><span class="badge bg-warning text-dark">Pending</span></td>
+                <td>
+                <button class="btn btn-success btn-sm" onclick="handleOdRequest({{od.id}},'approve')" data-url="{% url 'process_od' 1 'approve' %}">Approve</button>
+                <button class="btn btn-danger btn-sm" onclick="handleOdRequest({{od.id}},'reject')" data-url="{% url 'process_od' 1 'approve' %}">Reject</button>
+                </td>
+            </tr>
+        {% endfor %}
+
+        {% for od in processed_od_requests %}
+            <tr id="od-{{od.id}}" >
+                <td>{{od.student.user.username}}</td>
+                <td>{{od.eventName}}</td>
+                <td>{{od.venue}}</td>
+                <td>{{od.start_date | date:"d M Y"}}</td>
+                <td>{{od.end_date | date:"d M Y"}}</td>
+                {% if od.isTeam %}
+                  <td>Team</td>
+                {% else %}
+                  <td>Individual</td>
+                {% endif %}
+                {% if od.hod_approval %}
+                  <td><span class="badge bg-success">Approved</span></td>
+                {% else %}
+                  <td><span class="badge bg-danger">Rejected</span></td>
+                {% endif %}
+                <td>
+                  <button class="btn btn-secondary btn-sm" disabled>Processed</button>
                 </td>
             </tr>
         {% endfor %}

@@ -66,22 +66,13 @@
                 </div>
             </div>
 
-            <!-- Mentor -->
-            <!-- <div class="event-form-group">
-                <label for="mentor">Mentor:</label>
-                <select id="mentor" name="mentor">
-                    <option value="">Select a Mentor</option>
-                    {% for mentor in mentors %}
-                        <option value="{{ mentor.user.username }}">{{ mentor.user.first_name }} {{mentor.user.last_name}}</option>
-                    {% endfor %}
-                </select>
-            </div> -->
 
             <!-- checkbox for team-->
             <div class="event-form-group">
                 <div class="event-form-row" >
                     <label for="isTeam">Is this a team event?</label>
-                <input type="checkbox" id="isTeam" name="isTeam" value="false">
+                    <input type="hidden" name="isTeam" value="false">
+                    <input type="checkbox" id="isTeam" name="isTeam" value="true">
                 </div>
                 
             </div>
@@ -91,7 +82,7 @@
                     <label>Team Members (Roll Numbers):</label>
                     <div id="teammates-container">
                         <div class="teammate-entry">
-                            <input type="text" name="teammates[]" placeholder="Enter roll number" required>
+                            <input type="text" name="teammates[]" placeholder="Enter roll number" >
                             <button type="button" class="remove-teammate">✖</button>
                         </div>
                     </div>

@@ -6,8 +6,10 @@
   <nav class="bg-sidebar text-white p-4 position-fixed vh-100" style="width: 250px ;top: 70px;">
     <!-- Calendar -->
     <div class="mt-5">
-      <label for="filter-date" class="form-label text-white fw-bold">Filter by Date</label>
-      <input type="date" class="form-control" id="filter-date" />
+      <form method="GET" action="{% url 'hod_home' %}">
+        <label for="filter-date" class="form-label text-white fw-bold">Filter by Date</label>
+        <input type="date" class="form-control" name="date" onchange="this.form.submit();" id="filter-date" />
+      </form>
     </div>
     <br>
     <ul class="nav flex-column">

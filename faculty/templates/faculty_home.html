@@ -5,56 +5,51 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="text-center mb-4">Faculty Dashboard</h2>
+    <h3 class="mb-4">Pending OD Requests</h3>
+    {% if od_requests %}
+        <div class="card shadow-sm rounded-4 p-3 bg-white">
+        <div class="table-responsive">
+            
+            <table class="table align-middle table-bordered mb-0">
+            <thead class="table-light">
+                <tr>
+                <th>Student</th>
+                <th>Event</th>
+                <th>Venue</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Team/Individual</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for od in od_requests %}
+                    <tr id="od-{{od.id}}" >
+                        <td>{{od.student.user.username}}</td>
+                        <td>{{od.eventName}}</td>
+                        <td>{{od.venue}}</td>
+                        <td>{{od.start_date | date:"d M Y"}}</td>
+                        <td>{{od.end_date | date:"d M Y"}}</td>
+                        {% if od.is_team %}
+                            <td>Team</td>
+                        {% else %}
+                            <td>Individual</td>
+                        {% endif %}
+                        <td>
+                        <button class="btn btn-success btn-sm" onclick="handleOdRequest({{od.id}},'approve')" >Approve</button>
+                        <button class="btn btn-danger btn-sm" onclick="handleOdRequest({{od.id}},'reject')">Reject</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">No pending OD requests.</p>
+        {% endif %}
 
-    <!-- OD Requests Section -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4>Pending OD Requests</h4>
         </div>
-        <div class="card-body">
-            {% if od_requests %}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Event</th>
-                            <th>Venue</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Team/individual</th>
-                            <th>Actions</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for od in od_requests %}
-                            <tr id="od-{{ od.id }}">
-                                <td>{{od.student.user.username}}</td>
-                                <td>{{ od.eventName }}</td>
-                                <td>{{ od.venue }}</td>
-                                <td>{{ od.start_date|date:"d M Y" }}</td>
-                                <td>{{ od.end_date|date:"d M Y" }}</td>
-                                {% if od.is_team %}
-                                    <td>Team</td>
-                                {% else %}
-                                    <td>Individual</td>
-                                {% endif %}
-                                <td>
-                                    <!-- need to call onclick function for the approve and reject buttons-->
-                                     
-                                    <a  onclick="handleOdRequest({{od.id}},'approve')" class="btn btn-success btn-sm">Approve</a>
-                                    <a  onclick="handleOdRequest({{od.id}},'reject')" class="btn btn-danger btn-sm">Reject</a>
-                                </td>
-                                <td><a href="{% url 'od_details' od.id %}" class="text-secondary">View details</a></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p class="text-muted">No pending OD requests.</p>
-            {% endif %}
         </div>
-    </div>
+
 
     <!-- Classes & Students OD Section -->
     <div class="card shadow-sm">
@@ -64,20 +59,25 @@
         <div class="card-body">
             {% if classes %}
                 {% for class in classes %}
+                <!-- <p>Debug class ID: {{ class.id }}</p>
+<p>OD list: {{ students_with_od|get_item:class.id }}</p> -->
+
                     <div class="card mb-3">
                         <div class="card-header">
-                            <h5>{{ class.department }} - Year {{ class.year }} - Section {{ class.section }}</h5>
+                            <h5>{{class.department}} Year {{ class.year }} - Section {{ class.section }}</h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-group">
-                                {% for student in students_with_od|get_item:class %}
+                            {% with class.id|stringformat:"s" as class_id_str %}
+                                {% for student in student_with_od|get_item:class_id_str %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ student.user.first_name }} {{ student.user.last_name }} ({{ student.roll_number }})
+                                        {{student.user.username}}
                                         <span class="badge bg-success">OD Approved</span>
                                     </li>
                                 {% empty %}
                                     <li class="list-group-item text-muted">No students with approved OD in this class.</li>
                                 {% endfor %}
+                            {% endwith %}
                             </ul>
                         </div>
                     </div>

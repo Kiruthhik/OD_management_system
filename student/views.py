@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
+from django.db.models import Q
 from .helper import *
 from .models import *
 # Create your views here.
@@ -23,11 +24,23 @@ def login(request):
 
 def home(request):
     student = Student.objects.get(user=request.user)
-    approved_ods = student_OD.objects.filter(student = student,hod_approval=True)
+    #approved_ods = student_OD.objects.filter(student = student,hod_approval=True)
+    approved_ods = student_OD.objects.filter(
+        Q(student=student) | Q(teammates=student),
+        hod_approval=True
+        ).distinct()
     print(approved_ods)
-    pending_ods = student_OD.objects.filter(student = student,hod_approval=False, OD_rejection=False)
+    #pending_ods = student_OD.objects.filter(student = student,hod_approval=False, OD_rejection=False)
+    pending_ods = student_OD.objects.filter(
+        Q(student=student) | Q(teammates=student),
+        hod_approval=False,OD_rejection=False
+        ).distinct()
     print(pending_ods)
-    rejected_ods = student_OD.objects.filter(student = student,OD_rejection=True)
+    #rejected_ods = student_OD.objects.filter(student = student,OD_rejection=True)
+    rejected_ods = student_OD.objects.filter(
+        Q(student=student) | Q(teammates=student),
+        OD_rejection=True
+        ).distinct()
     print(rejected_ods)
     context ={
         'approved_ods':approved_ods,
