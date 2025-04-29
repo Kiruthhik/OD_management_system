@@ -64,7 +64,7 @@ def hod_home(request):
         from datetime import datetime  
         filter_date = datetime.strptime(filter_date, '%Y-%m-%d').date()
         # Filter the od_requests based on the startdate less than or equal to the filter_date and enddate greater than or equal to the filter_date
-        od_requests = student_OD.objects.filter(hod_approval=False, start_date__lte=filter_date,end_date__gte=filter_date)
+        od_requests = student_OD.objects.filter(hod_approval=False, OD_rejection=False,start_date__lte=filter_date,end_date__gte=filter_date)
         pending_od_requests = student_OD.objects.filter(academic_head_approval=False,OD_rejection=False,start_date__lte=filter_date,end_date__gte=filter_date)
         pending_od_requests |= student_OD.objects.filter(class_incharge_approval=False,OD_rejection=False,start_date__lte=filter_date,end_date__gte=filter_date)
         processed_od_requests = student_OD.objects.filter(hod_approval=True,start_date__lte=filter_date,end_date__gte=filter_date)
@@ -87,7 +87,7 @@ def hod_home(request):
             'pending_od_requests': pending_od_requests,
             'processed_od_requests': processed_od_requests,
         }
-    print(od_requests)
+    #print(od_requests)
     return render(request, 'hod-home.html',content)
 
 def od_details(request,id):

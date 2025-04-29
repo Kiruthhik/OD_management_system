@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for od in all_od_requests %}
+        <!-- {% for od in all_od_requests %}
             <tr id="od-{{od.id}}" >
                 <td>{{od.student.first_name}}</td>
                 <td>{{od.eventName}}</td>
@@ -41,7 +41,7 @@
                 <button class="btn btn-danger btn-sm" onclick="handleOdRequest({{od.id}},'reject')">Reject</button>
                 </td>
             </tr>
-        {% endfor %}
+        {% endfor %} -->
 
         {% for od in od_requests %}
             <tr id="od-{{od.id}}" >
@@ -51,7 +51,20 @@
                 <td>{{od.start_date | date:"d M Y"}}</td>
                 <td>{{od.end_date | date:"d M Y"}}</td>
                 {% if od.isTeam %}
-                  <td>Team</td>
+                <td>
+                <span 
+                  tabindex="0" 
+                  class="badge bg-info text-dark" 
+                  role="button" 
+                  data-bs-toggle="popover" 
+                  data-bs-trigger="hover focus" 
+                  data-bs-html="true"
+                  title="Teammates"
+                  data-bs-content="{% for mate in od.teammates.all %}{{ mate.user.username }}<br>{% endfor %}"
+                >
+                  Team
+                </span>
+              </td>
                 {% else %}
                   <td>Individual</td>
                 {% endif %}
@@ -71,7 +84,18 @@
                 <td>{{od.start_date | date:"d M Y"}}</td>
                 <td>{{od.end_date | date:"d M Y"}}</td>
                 {% if od.isTeam %}
-                  <td>Team</td>
+                  <td><span 
+                    tabindex="0" 
+                    class="badge bg-info text-dark" 
+                    role="button" 
+                    data-bs-toggle="popover" 
+                    data-bs-trigger="hover focus" 
+                    data-bs-html="true"
+                    title="Teammates"
+                    data-bs-content="{% for mate in od.teammates.all %}{{ mate.user.username }}<br>{% endfor %}"
+                  >
+                    Team
+                  </span></td>
                 {% else %}
                   <td>Individual</td>
                 {% endif %}
@@ -91,7 +115,18 @@
                 <td>{{od.start_date | date:"d M Y"}}</td>
                 <td>{{od.end_date | date:"d M Y"}}</td>
                 {% if od.isTeam %}
-                  <td>Team</td>
+                  <td><span 
+                    tabindex="0" 
+                    class="badge bg-info text-dark" 
+                    role="button" 
+                    data-bs-toggle="popover" 
+                    data-bs-trigger="hover focus" 
+                    data-bs-html="true"
+                    title="Teammates"
+                    data-bs-content="{% for mate in od.teammates.all %}{{ mate.user.username }}<br>{% endfor %}"
+                  >
+                    Team
+                  </span></td>
                 {% else %}
                   <td>Individual</td>
                 {% endif %}
@@ -105,43 +140,6 @@
                 </td>
             </tr>
         {% endfor %}
-        <tr>
-          <td>Karthik M</td>
-          <td>Intercollege Symposium</td>
-          <td>IIT Madras</td>
-          <td>2024-03-15</td>
-          <td>2024-03-16</td>
-          <td>Team</td>
-          <td><span class="badge bg-warning text-dark">Pending</span></td>
-          <td>
-            <button class="btn btn-success btn-sm">Approve</button>
-            <button class="btn btn-danger btn-sm">Reject</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Divya S</td>
-          <td>Tech Expo</td>
-          <td>Anna University</td>
-          <td>2024-04-01</td>
-          <td>2024-04-01</td>
-          <td>Individual</td>
-          <td><span class="badge bg-success">Approved</span></td>
-          <td>
-            <button class="btn btn-secondary btn-sm" disabled>Processed</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Arun K</td>
-          <td>Sports Meet</td>
-          <td>SRM University</td>
-          <td>2024-03-10</td>
-          <td>2024-03-12</td>
-          <td>Team</td>
-          <td><span class="badge bg-danger">Rejected</span></td>
-          <td>
-            <button class="btn btn-secondary btn-sm" disabled>Processed</button>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>
@@ -153,6 +151,13 @@
     }
 </style>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+      });
+    });
+
     //want to add a onclick event handler for the approve and reject buttons by passing the od id to the function
     // and then use the od id to get the row of the od request and hide it from the table
     // then use ajax to send a post request to the server with the od id and the action (approve or reject)
