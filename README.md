@@ -57,18 +57,65 @@ This project develops a **web-based application** to manage the **On Duty (OD) a
 ## 📊 Workflow Diagram
 
 ```mermaid
-flowchart TD
-    A[Student applies OD] --> B{Class Incharge Approval?}
-    B -- No --> R1[Rejected]
-    B -- Yes --> C{Academic Head Approval?}
-    C -- No --> R2[Rejected]
-    C -- Yes --> D{HOD Approval?}
-    D -- No --> R3[Rejected]
-    D -- Yes --> E[OD Approved]
-    E --> F[Shown in Faculty Dashboards]
-    R1 --> G[Student notified]
-    R2 --> G
-    R3 --> G
+classDiagram
+    class User {
+      +id
+      +username
+      +password
+    }
+
+    class Student {
+      +id
+      +roll_number
+      +department
+      +section
+      +year
+    }
+
+    class Faculty {
+      +id
+      +faculty_code
+      +department
+      +faculty_type
+    }
+
+    class Class {
+      +id
+      +department
+      +year
+      +section
+    }
+
+    class StudentOD {
+      +id
+      +eventName
+      +eventType
+      +venue
+      +start_date
+      +end_date
+      +proof
+      +isTeam
+      +class_incharge_approval
+      +academic_head_approval
+      +hod_approval
+      +OD_rejection
+    }
+
+    class FacultyOD {
+      +id
+      +description
+    }
+
+    User <|-- Student
+    User <|-- Faculty
+    Class "1" o-- "many" Student : contains
+    Class "1" o-- "many" Faculty : handles
+    Class "1" --> "1" Faculty : incharge
+    StudentOD --> Student : applicant
+    StudentOD --> Class : belongs_to
+    StudentOD o-- Student : teammates
+    StudentOD --> Faculty : approved_by
+    FacultyOD --> Faculty : applicant
 ```
 
 ---
@@ -77,63 +124,64 @@ flowchart TD
 
 ```mermaid
 classDiagram
-+id
-+roll_number
-+department
-+section
-+year
-}
+    class User {
+      +id
+      +username
+      +password
+    }
 
+    class Student {
+      +id
+      +roll_number
+      +department
+      +section
+      +year
+    }
 
-class Faculty {
-+id
-+faculty_code
-+department
-+faculty_type
-}
+    class Faculty {
+      +id
+      +faculty_code
+      +department
+      +faculty_type
+    }
 
+    class Class {
+      +id
+      +department
+      +year
+      +section
+    }
 
-class Class {
-+id
-+department
-+year
-+section
-}
+    class StudentOD {
+      +id
+      +eventName
+      +eventType
+      +venue
+      +start_date
+      +end_date
+      +proof
+      +isTeam
+      +class_incharge_approval
+      +academic_head_approval
+      +hod_approval
+      +OD_rejection
+    }
 
+    class FacultyOD {
+      +id
+      +description
+    }
 
-class StudentOD {
-+id
-+eventName
-+eventType
-+venue
-+start_date
-+end_date
-+proof
-+isTeam
-+class_incharge_approval
-+academic_head_approval
-+hod_approval
-+OD_rejection
-}
-
-
-class FacultyOD {
-+id
-+description
-}
-
-
-User <|-- Student
-User <|-- Faculty
-Class "1" o-- "many" Student : contains
-Class "1" o-- "many" Faculty : handles
-Class "1" --> "1" Faculty : incharge
-StudentOD --> Student : applicant
-StudentOD --> Class : belongs_to
-StudentOD o-- Student : teammates
-StudentOD --> Faculty : approved_by
-FacultyOD --> Faculty : applicant
-
+    User <|-- Student
+    User <|-- Faculty
+    Class "1" o-- "many" Student : contains
+    Class "1" o-- "many" Faculty : handles
+    Class "1" --> "1" Faculty : incharge
+    StudentOD --> Student : applicant
+    StudentOD --> Class : belongs_to
+    StudentOD o-- Student : teammates
+    StudentOD --> Faculty : approved_by
+    FacultyOD --> Faculty : applicant
 ```
 
 ---
@@ -215,5 +263,5 @@ python manage.py runserver
 
 ## 👥 Authors
 
-* **TechDecks / Rajalakshmi Engineering College**
-* Contact: *kiruthhik@gmail.com*
+* **Your Team / College**
+* Contact: *\[Add your email or website]*
