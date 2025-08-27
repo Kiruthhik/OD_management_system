@@ -55,67 +55,33 @@ This project develops a **web-based application** to manage the **On Duty (OD) a
 ---
 
 ## 📊 Workflow Diagram
+```
+mermaid
 
-```mermaid
-classDiagram
-    class User {
-      +id
-      +username
-      +password
-    }
+- flowchart TD
 
-    class Student {
-      +id
-      +roll_number
-      +department
-      +section
-      +year
-    }
+A[Student applies OD] -- > B{class Incharge Approval?}
+B -- No -- > R1[Rejected]
 
-    class Faculty {
-      +id
-      +faculty_code
-      +department
-      +faculty_type
-    }
+B -- Yes -- > C{Academic Head Approval?}
 
-    class Class {
-      +id
-      +department
-      +year
-      +section
-    }
+C -- No -- > R2[Rejected]
 
-    class StudentOD {
-      +id
-      +eventName
-      +eventType
-      +venue
-      +start_date
-      +end_date
-      +proof
-      +isTeam
-      +class_incharge_approval
-      +academic_head_approval
-      +hod_approval
-      +OD_rejection
-    }
+C -- Yes -- > D{HOD Approval?}
 
-    class FacultyOD {
-      +id
-      +description
-    }
+D -- No -- > R3[Rejected]
 
-    User <|-- Student
-    User <|-- Faculty
-    Class "1" o-- "many" Student : contains
-    Class "1" o-- "many" Faculty : handles
-    Class "1" --> "1" Faculty : incharge
-    StudentOD --> Student : applicant
-    StudentOD --> Class : belongs_to
-    StudentOD o-- Student : teammates
-    StudentOD --> Faculty : approved_by
-    FacultyOD --> Faculty : applicant
+D -- Yes -- > E[OD Approved]
+
+E -- > F[Shown in Faculty Dashboards]
+
+R1 -- > G[Student notified]
+
+R2
+
+R3 -- > G
+
+> G
 ```
 
 ---
