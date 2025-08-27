@@ -76,20 +76,63 @@ flowchart TD
 ## 🗂 Data Model (ER Diagram)
 
 ```mermaid
-erDiagram
-    USER ||--o{ STUDENT : has
-    USER ||--o{ FACULTY : has
+classDiagram
++id
++roll_number
++department
++section
++year
+}
 
-    CLASS ||--o{ STUDENT : contains
-    CLASS ||--o{ FACULTY : handles
-    CLASS }o--|| FACULTY : incharge
 
-    STUDENT_OD }o--|| STUDENT : applicant
-    STUDENT_OD }o--|| CLASS   : belongs_to
-    STUDENT_OD }o--o{ STUDENT : teammates
-    STUDENT_OD }o--|| FACULTY : approved_by
+class Faculty {
++id
++faculty_code
++department
++faculty_type
+}
 
-    FACULTY_OD }o--|| FACULTY : applicant
+
+class Class {
++id
++department
++year
++section
+}
+
+
+class StudentOD {
++id
++eventName
++eventType
++venue
++start_date
++end_date
++proof
++isTeam
++class_incharge_approval
++academic_head_approval
++hod_approval
++OD_rejection
+}
+
+
+class FacultyOD {
++id
++description
+}
+
+
+User <|-- Student
+User <|-- Faculty
+Class "1" o-- "many" Student : contains
+Class "1" o-- "many" Faculty : handles
+Class "1" --> "1" Faculty : incharge
+StudentOD --> Student : applicant
+StudentOD --> Class : belongs_to
+StudentOD o-- Student : teammates
+StudentOD --> Faculty : approved_by
+FacultyOD --> Faculty : applicant
 
 ```
 
