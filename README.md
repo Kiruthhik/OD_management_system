@@ -58,30 +58,19 @@ This project develops a **web-based application** to manage the **On Duty (OD) a
 ```
 mermaid
 
-- flowchart TD
+flowchart TD
+    A[Student applies OD] --> B{Class Incharge Approval?}
+    B -- No --> R1[Rejected]
+    B -- Yes --> C{Academic Head Approval?}
+    C -- No --> R2[Rejected]
+    C -- Yes --> D{HOD Approval?}
+    D -- No --> R3[Rejected]
+    D -- Yes --> E[OD Approved]
+    E --> F[Shown in Faculty Dashboards]
+    R1 --> G[Student notified]
+    R2 --> G
+    R3 --> G
 
-A[Student applies OD] -- > B{class Incharge Approval?}
-B -- No -- > R1[Rejected]
-
-B -- Yes -- > C{Academic Head Approval?}
-
-C -- No -- > R2[Rejected]
-
-C -- Yes -- > D{HOD Approval?}
-
-D -- No -- > R3[Rejected]
-
-D -- Yes -- > E[OD Approved]
-
-E -- > F[Shown in Faculty Dashboards]
-
-R1 -- > G[Student notified]
-
-R2
-
-R3 -- > G
-
-> G
 ```
 
 ---
