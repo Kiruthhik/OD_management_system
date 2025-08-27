@@ -77,19 +77,20 @@ flowchart TD
 
 ```mermaid
 erDiagram
-    USER ||--o| STUDENT : has
-    USER ||--o| FACULTY : has
+    USER ||--o{ STUDENT : has
+    USER ||--o{ FACULTY : has
 
     CLASS ||--o{ STUDENT : contains
-    CLASS ||--o{ FACULTY : handled_by
-    CLASS ||--|| FACULTY : class_incharge
+    CLASS ||--o{ FACULTY : handles
+    CLASS }o--|| FACULTY : incharge
 
-    STUDENT_OD }|--|| STUDENT : applicant
-    STUDENT_OD }|--|| CLASS   : for_class
+    STUDENT_OD }o--|| STUDENT : applicant
+    STUDENT_OD }o--|| CLASS   : belongs_to
     STUDENT_OD }o--o{ STUDENT : teammates
-    STUDENT_OD }|--|| FACULTY : approver_class_incharge
+    STUDENT_OD }o--|| FACULTY : approved_by
 
-    FACULTY_OD }|--|| FACULTY : applicant
+    FACULTY_OD }o--|| FACULTY : applicant
+
 ```
 
 ---
@@ -171,5 +172,5 @@ python manage.py runserver
 
 ## 👥 Authors
 
-* **Your Team / College**
-* Contact: *\[Add your email or website]*
+* **TechDecks / Rajalakshmi Engineering College**
+* Contact: *kiruthhik@gmail.com*
