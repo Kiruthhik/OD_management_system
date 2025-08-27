@@ -55,9 +55,7 @@ This project develops a **web-based application** to manage the **On Duty (OD) a
 ---
 
 ## 📊 Workflow Diagram
-```
-mermaid
-
+```mermaid
 flowchart TD
     A[Student applies OD] --> B{Class Incharge Approval?}
     B -- No --> R1[Rejected]
@@ -70,8 +68,8 @@ flowchart TD
     R1 --> G[Student notified]
     R2 --> G
     R3 --> G
-
 ```
+
 
 ---
 
