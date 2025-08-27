@@ -216,5 +216,5 @@ python manage.py runserver
 
 ## 👥 Authors
 
-* **Your Team / College**
-* Contact: *\[Add your email or website]*
+* **TechDecks / Rajalakshmi Engineering College**
+* Contact: *kiruthhik@gmail.com*
